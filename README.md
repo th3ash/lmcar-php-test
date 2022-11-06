@@ -10,3 +10,5 @@ composer install
 #执行单元测试
 ./vendor/phpunit/phpunit/phpunit tests/App/DemoTest.php 
 ```
+
+## 完成

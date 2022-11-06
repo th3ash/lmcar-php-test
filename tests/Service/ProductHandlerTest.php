@@ -5,6 +5,9 @@ namespace Test\Service;
 use PHPUnit\Framework\TestCase;
 use App\Service\ProductHandler;
 
+include_once './vendor/autoload.php';
+include_once __DIR__.'/../../src/Service/ProductHandler.php';
+
 /**
  * Class ProductHandlerTest
  */
@@ -57,12 +60,67 @@ class ProductHandlerTest extends TestCase
 
     public function testGetTotalPrice()
     {
-        $totalPrice = 0;
-        foreach ($this->products as $product) {
-            $price = $product['price'] ?: 0;
-            $totalPrice += $price;
-        }
+        $tatol = ProductHandler::getTotalPrice($this->products);
+        $this->assertEquals(143, $tatol);
+        return $tatol;
+    }
 
-        $this->assertEquals(143, $totalPrice);
+    public function testSortProduct()
+    {
+        $products = [
+            [
+                'id' => 3,
+                'name' => 'Ham Sandwich',
+                'type' => 'Sandwich',
+                'price' => 45,
+                'create_at' => '2021-04-20 19:00:00',
+            ],
+            [
+                'id' => 5,
+                'name' => 'New York Cheese Cake',
+                'type' => 'Dessert',
+                'price' => 40,
+                'create_at' => '2021-04-19 14:38:00',
+            ],
+            [
+                'id' => 4,
+                'name' => 'Cup cake',
+                'type' => 'Dessert',
+                'price' => 35,
+                'create_at' => '2021-04-18 08:45:00',
+            ],
+            [
+                'id' => 1,
+                'name' => 'Coca-cola',
+                'type' => 'Drinks',
+                'price' => 10,
+                'create_at' => '2021-04-20 10:00:00',
+            ],
+            [
+                'id' => 6,
+                'name' => 'Lemon Tea',
+                'type' => 'Drinks',
+                'price' => 8,
+                'create_at' => '2021-04-04 19:23:00',
+            ],
+            [
+                'id' => 2,
+                'name' => 'Persi',
+                'type' => 'Drinks',
+                'price' => 5,
+                'create_at' => '2021-04-21 09:00:00',
+            ],
+        ];
+        $data = ProductHandler::sortProduct($this->products);
+        $this->assertJsonStringEqualsJsonString(json_encode($products),json_encode($data[0]));
+        $this->assertCount(2,$data[1]);
+        return $data;
+    }
+
+    public function testChangeTimeStamp()
+    {
+        $newArr = ProductHandler::changeTimeStamp($this->products);
+        $this->assertEquals(strtotime($this->products[0]['create_at']),$newArr[0]['create_at']);
+        return $newArr;
     }
 }
