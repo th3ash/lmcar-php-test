@@ -57,12 +57,36 @@ class ProductHandlerTest extends TestCase
 
     public function testGetTotalPrice()
     {
-        $totalPrice = 0;
-        foreach ($this->products as $product) {
-            $price = $product['price'] ?: 0;
-            $totalPrice += $price;
-        }
+        $productService =  new ProductHandler();
+        $testTotalPrice = $productService->getTotalPrice($this->products);
 
-        $this->assertEquals(143, $totalPrice);
+        $this->assertEquals(143, $testTotalPrice);
+    }
+
+    public function testProductSort() {
+
+        $productType = 'Dessert';
+
+        $productService =  new ProductHandler();
+        $products = $productService->getProductSort($this->products,$productType);
+
+
+        $this->assertNotEmpty($products,'productSort 返回数据为空');
+
+        $productPrice = PHP_INT_MAX;
+        foreach ($products as $product) {
+            $this->assertNotTrue(!empty($productType) && $product['type'] != $productType, "ProductSort 产品中含有非{$productType}类型数据");
+            $this->assertNotTrue($product['price'] > $productPrice, 'ProductSort 产品排序不正确');
+            $productPrice = $product['price'];
+        }
+    }
+
+    public function testConvertCreateTime() {
+        $productService =  new ProductHandler();
+        $products = $productService->convertCreateTime($this->products);
+
+        foreach ($products as $product) {
+            $this->assertEquals($product['create_at'],date("Y-m-d H:i:s",$product['create_time']),'ConvertCreateTime 时间转换不正确');
+        }
     }
 }
