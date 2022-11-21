@@ -23,10 +23,14 @@ class DemoTest extends TestCase
 
     public function testGetUserInfo()
     {
-        $logger = new AppLogger('log4php');
+        $httpRequest =$this->createMock("\App\Util\HttpRequest");
+        $httpRequest->expects($this->once())
+        ->method('get')
+        ->will($this->returnValue('{"error":0,"data":{"id":1,"username":"username"}}'));
 
+        $logger = new AppLogger('log4php');
         try {
-            $userService = new Demo($logger, new HttpRequest());
+            $userService = new Demo($logger, $httpRequest);
             $userInfo = $userService->get_user_info();
         } catch (\Exception $e) {
             $this->assertNotTrue(true,"GetUserInfo 调用方法异常".$e->getMessage());
