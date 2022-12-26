@@ -74,6 +74,7 @@ class ProductHandlerTest extends TestCase
 
 
     /**
+     * 验证总金额
      *  test get total price
      */
     public function testGetTotalPrice()
@@ -82,6 +83,7 @@ class ProductHandlerTest extends TestCase
     }
 
     /**
+     * 验证列表排序
      * test list sorting
      */
     public function testListSorting()
@@ -94,6 +96,7 @@ class ProductHandlerTest extends TestCase
     }
 
     /**
+     * 验证列表筛选
      * 先从大到小排序, 然后Filter Asserting
      * test list filter
      */
