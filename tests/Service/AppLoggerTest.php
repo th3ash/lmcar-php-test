@@ -2,6 +2,8 @@
 
 namespace Test\Service;
 
+use App\Service\Log4phpDecorator;
+use App\Service\ThinkLogDecorator;
 use PHPUnit\Framework\TestCase;
 use App\Service\AppLogger;
 
@@ -10,10 +12,17 @@ use App\Service\AppLogger;
  */
 class AppLoggerTest extends TestCase
 {
-
+    /**
+     * 测试工厂返回
+     */
     public function testInfoLog()
     {
+        //调用log4php 返回 Log4phpDecorator实例
         $logger = new AppLogger('log4php');
-        $logger->info('This is info log message');
+        $this->assertInstanceOf(Log4phpDecorator::class,$logger->getLogger());
+
+        //调用thinklog 返回 ThinkLogDecorator实例
+        $logger = new AppLogger('thinklog');
+        $this->assertInstanceOf(ThinkLogDecorator::class,$logger->getLogger());
     }
 }

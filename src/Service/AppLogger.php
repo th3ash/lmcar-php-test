@@ -2,31 +2,83 @@
 
 namespace App\Service;
 
-class AppLogger
+/**
+ * 用作工厂类
+ * @Class   AppLogger
+ * @package App\Service
+ */
+class AppLogger implements LogInterface
 {
-    const TYPE_LOG4PHP = 'log4php';
+    //log4php
+    public const TYPELOG4PHP = 'log4php';
 
+    //thinklog
+    public const TYPETHINKLOGPHP = 'thinklog';
+
+    //设置日志工厂信息
+    public $logFactoryList = [
+            self::TYPELOG4PHP     => Log4phpDecorator::class,
+            self::TYPETHINKLOGPHP => ThinkLogDecorator::class,
+    ];
+
+    /**
+     *
+     *
+     * @var LogInterface
+     */
     private $logger;
 
-    public function __construct($type = self::TYPE_LOG4PHP)
+    /**
+     * @constructor AppLogger.
+     *
+     * @param  null  $type
+     */
+    public function __construct($type = null)
     {
-        if ($type == self::TYPE_LOG4PHP) {
-            $this->logger = \Logger::getLogger("Log");
-        }
+        $this->logger = new $this->logFactoryList[$type]();
     }
 
+    /**
+     *
+     *
+     * @param  string  $message
+     *
+     * @return   mixed|void
+     */
     public function info($message = '')
     {
         $this->logger->info($message);
     }
 
+    /**
+     *
+     *
+     * @param  string  $message
+     *
+     * @return   mixed|void
+     */
     public function debug($message = '')
     {
         $this->logger->debug($message);
     }
 
+    /**
+     *
+     *
+     * @param  string  $message
+     *
+     * @return   mixed|void
+     */
     public function error($message = '')
     {
         $this->logger->error($message);
+    }
+
+    /**
+     * @return LogInterface
+     */
+    public function getLogger(): LogInterface
+    {
+        return $this->logger;
     }
 }
