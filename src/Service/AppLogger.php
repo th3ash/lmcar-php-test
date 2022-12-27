@@ -4,19 +4,20 @@ namespace App\Service;
 
 /**
  * 用作工厂类
+ *
  * @Class   AppLogger
  * @package App\Service
  */
 class AppLogger implements LogInterface
 {
     //log4php
-    public const TYPELOG4PHP = 'log4php';
+    private const TYPELOG4PHP = 'log4php';
 
     //thinklog
-    public const TYPETHINKLOGPHP = 'thinklog';
+    private const TYPETHINKLOGPHP = 'thinklog';
 
     //设置日志工厂信息
-    public $logFactoryList = [
+    private $logFactoryList = [
         self::TYPELOG4PHP     => Log4phpDecorator::class,
         self::TYPETHINKLOGPHP => ThinkLogDecorator::class,
     ];
@@ -31,11 +32,11 @@ class AppLogger implements LogInterface
     /**
      * @constructor AppLogger.
      *
-     * @param  null  $type
+     * @param  null  $logTypeOrInstance
      */
-    public function __construct($type = null)
+    public function __construct($logTypeOrInstance = null)
     {
-        $this->logger = new $this->logFactoryList[$type]();
+        $this->logger = $logTypeOrInstance instanceof LogInterface ? $logTypeOrInstance : $this->loadingLog((string)$logTypeOrInstance);
     }
 
     /**
@@ -80,5 +81,21 @@ class AppLogger implements LogInterface
     public function getLogger(): LogInterface
     {
         return $this->logger;
+    }
+
+    /**
+     * 加载日志类实例
+     *
+     * @param  string|null  $logTypeOrInstance
+     *
+     * @return   mixed
+     */
+    private function loadingLog(string $logTypeOrInstance = null): LogInterface
+    {
+        if (array_key_exists($logTypeOrInstance,$this->logFactoryList)) {
+            return new $this->logFactoryList[$logTypeOrInstance]();
+        }
+
+        throw new \LogicException('not found log class',10001);
     }
 }
