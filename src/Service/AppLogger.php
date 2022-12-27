@@ -17,8 +17,8 @@ class AppLogger implements LogInterface
 
     //设置日志工厂信息
     public $logFactoryList = [
-            self::TYPELOG4PHP     => Log4phpDecorator::class,
-            self::TYPETHINKLOGPHP => ThinkLogDecorator::class,
+        self::TYPELOG4PHP     => Log4phpDecorator::class,
+        self::TYPETHINKLOGPHP => ThinkLogDecorator::class,
     ];
 
     /**

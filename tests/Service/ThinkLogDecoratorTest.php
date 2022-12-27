@@ -24,8 +24,8 @@ class ThinkLogDecoratorTest extends TestCase
     public function testInfo()
     {
         //预期将会传入ABC
-        $mockObject        = $this->getMockBuilder(LogManager::class)->getMock( );
-        $mockObject->method('info')->with('ABC');
+        $mockObject        = $this->getMockBuilder(LogManager::class)->getMock();
+        $mockObject->expects($this->once())->method('info')->with($this->equalTo('ABC'));
 
         $thinkLogDecorator = new ThinkLogDecorator($mockObject);
         $thinkLogDecorator->info('abc');
@@ -35,8 +35,8 @@ class ThinkLogDecoratorTest extends TestCase
     public function testDebug()
     {
         //预期将会传入ABC
-        $mockObject        = $this->getMockBuilder(LogManager::class)->getMock( );
-        $mockObject->method('info')->with('ABC');
+        $mockObject        = $this->getMockBuilder(LogManager::class)->getMock();
+        $mockObject->expects($this->once())->method('debug')->with($this->equalTo('ABC'));
 
         $thinkLogDecorator = new ThinkLogDecorator($mockObject);
         $thinkLogDecorator->debug('abc');
@@ -46,8 +46,8 @@ class ThinkLogDecoratorTest extends TestCase
     public function testError()
     {
         //预期将会传入ABC
-        $mockObject        = $this->getMockBuilder(LogManager::class)->getMock( );
-        $mockObject->method('info')->with('ABC');
+        $mockObject        = $this->getMockBuilder(LogManager::class)->getMock();
+        $mockObject->expects($this->once())->method('error')->with($this->equalTo('ABC'));
 
         $thinkLogDecorator = new ThinkLogDecorator($mockObject);
         $thinkLogDecorator->error('abc');
