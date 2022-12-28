@@ -19,8 +19,8 @@ class Demo {
     function get_user_info() {
         $result = $this->_req->get(self::URL);
         $result_arr = json_decode($result, true);
-        if (in_array('error', $result_arr) && $result_arr['error'] == 0) {
-            if (in_array('data', $result_arr)) {
+        if (array_key_exists('error', $result_arr) && $result_arr['error'] == 0) {
+            if (array_key_exists('data', $result_arr)) {
                 return $result_arr['data'];
             }
         } else {
